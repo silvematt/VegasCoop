@@ -5,7 +5,7 @@
 #include "nvse/GameObjects.h"
 #include <string>
 
-// VegasCoop
+// [VegasCoop]
 #include <WinSock2.h>
 #include "VegasCoopBlock.h"
 
@@ -15,7 +15,7 @@ NVSEMessagingInterface* g_messagingInterface{};
 NVSEInterface* g_nvseInterface{};
 NVSECommandTableInterface* g_cmdTableInterface{};
 
-// VegasCoop
+// [VegasCoop]
 VegasCoopBlock	g_vegasCoopBlock;
 
 // RUNTIME = Is not being compiled as a GECK plugin.
@@ -259,6 +259,9 @@ bool NVSEPlugin_Load(NVSEInterface* nvse)
 	/*2005*/ REG_TYPED_CMD(ExamplePlugin_ReturnString, String);	// ignore the highlighting for String class, that's not being used here.
 	/*2006*/ REG_TYPED_CMD(ExamplePlugin_ReturnArray, Array);
 	/*2007*/ REG_CMD(VegasCoop_Init);
+	/*2008*/ REG_CMD(VegasCoop_SetupListener);
+	/*2009*/ REG_CMD(VegasCoop_AcceptConnection);
+	/*2010*/ REG_CMD(VegasCoop_Connect);
 
 	return true;
 }
