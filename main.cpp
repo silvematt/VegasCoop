@@ -5,16 +5,18 @@
 #include "nvse/GameObjects.h"
 #include <string>
 
+// VegasCoop
 #include <WinSock2.h>
-
-//NoGore is unsupported in xNVSE
+#include "VegasCoopBlock.h"
 
 IDebugLog		gLog("nvse_plugin_example.log");
 PluginHandle	g_pluginHandle = kPluginHandle_Invalid;
-
 NVSEMessagingInterface* g_messagingInterface{};
 NVSEInterface* g_nvseInterface{};
 NVSECommandTableInterface* g_cmdTableInterface{};
+
+// VegasCoop
+VegasCoopBlock	g_vegasCoopBlock;
 
 // RUNTIME = Is not being compiled as a GECK plugin.
 #if RUNTIME

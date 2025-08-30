@@ -7,8 +7,14 @@
     <Filter Include="functions">
       <UniqueIdentifier>{010e4101-a209-4fed-af9f-5ffa21a85c34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="VEGASCoop">
+    <Filter Include="VegasCoop">
       <UniqueIdentifier>{88d9d7d0-3f32-4745-a712-8875c3b9840c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VegasCoop\Networking">
+      <UniqueIdentifier>{c8f049c0-e8e5-4234-ae61-cb18e6580d68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VegasCoop\Functions">
+      <UniqueIdentifier>{c869d188-589b-4b73-8a44-c8198d46238b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="..\nvse\nvse\NiTypes.cpp">
       <Filter>nvse</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>VegasCoop\Networking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,8 +160,26 @@
     <ClInclude Include="..\nvse\nvse\GameUI.h">
       <Filter>nvse</Filter>
     </ClInclude>
+    <ClInclude Include="SocketAddress.h">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtility.h">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkMessage.h">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClInclude>
     <ClInclude Include="fn_vegascoop_functions.h">
-      <Filter>VEGASCoop</Filter>
+      <Filter>VegasCoop\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="VegasCoopBlock.h">
+      <Filter>VegasCoop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

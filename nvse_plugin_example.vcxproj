@@ -344,6 +344,8 @@
       </ForcedIncludeFiles>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="TCPSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\nvse\nvse\CommandTable.h" />
@@ -368,9 +370,15 @@
     <ClInclude Include="..\nvse\nvse\SafeWrite.h" />
     <ClInclude Include="..\nvse\nvse\Utilities.h" />
     <ClInclude Include="..\nvse\nvse\utility.h" />
+    <ClInclude Include="VegasCoopBlock.h" />
     <ClInclude Include="fn_intro_to_script_functions.h" />
     <ClInclude Include="fn_vegascoop_functions.h" />
     <ClInclude Include="fn_typed_functions.h" />
+    <ClInclude Include="NetworkMessage.h" />
+    <ClInclude Include="Packet.h" />
+    <ClInclude Include="SocketAddress.h" />
+    <ClInclude Include="SocketUtility.h" />
+    <ClInclude Include="TCPSocket.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
