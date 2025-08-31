@@ -157,17 +157,16 @@ namespace NECRO
 
 		// Manually write on the inBuffer
 		int bytesReceived = 0;
-		size_t sslBytesReceived = 0;
-			bytesReceived = recv(m_socket, reinterpret_cast<char*>(m_inBuffer.GetWritePointer()), m_inBuffer.GetRemainingSpace(), 0);
+		bytesReceived = recv(m_socket, reinterpret_cast<char*>(m_inBuffer.GetWritePointer()), m_inBuffer.GetRemainingSpace(), 0);
 
-			if (bytesReceived < 0)
-			{
-				if (SocketUtility::ErrorIsWouldBlock())
-					return 0;
+		if (bytesReceived < 0)
+		{
+			if (SocketUtility::ErrorIsWouldBlock())
+				return 0;
 
-				//LOG_ERROR(std::string("Error during TCPSocket::Receive() [") + std::to_string(SocketUtility::GetLastError()) + "]");
-				return -1;
-			}
+			//LOG_ERROR(std::string("Error during TCPSocket::Receive() [") + std::to_string(SocketUtility::GetLastError()) + "]");
+			return -1;
+		}
 
 		// Make sure to update the write pos
 		m_inBuffer.WriteCompleted(bytesReceived);

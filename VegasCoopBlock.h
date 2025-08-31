@@ -16,6 +16,14 @@ private:
 	bool m_isConnected = false;
 
 public:
+	bool connectionDone = false;
+
+	bool hasBeenUpdatedOnce = false;
+	float lastX;
+	float lastY;
+	float lastZ;
+	float lastRot;
+
 	VegasCoopBlock() : m_listener(SocketAddressesFamily::INET)
 	{
 	}
@@ -53,6 +61,7 @@ public:
 		if (inSock != nullptr)
 		{
 			m_socket = inSock;
+			connectionDone = true;
 			return 0;
 		}
 		else
@@ -63,7 +72,7 @@ public:
 	{
 		// Make socket
 		m_socket = std::make_shared<TCPSocket>(SocketAddressesFamily::INET);
-
+		
 		uint16_t outPort = 61532;
 		struct in_addr addr;
 		inet_pton(AF_INET, "192.168.1.221", &addr);
@@ -86,8 +95,43 @@ public:
 		else
 		{
 			// Connection succeded!
-			m_socket->SetBlockingEnabled(true); // block on connection
+			m_socket->SetBlockingEnabled(false); // block on connection
+			connectionDone = true;
 			return 0;
+		}
+	}
+
+	void QueuePacket(NetworkMessage&& m)
+	{
+		m_socket->QueuePacket(std::move(m));
+	}
+
+	void Send()
+	{
+		m_socket->Send();
+	}
+
+	void Receive()
+	{
+		int s =  m_socket->Receive();
+
+		while (s >= 16)
+		{
+			lastX = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
+			m_socket->m_inBuffer.ReadCompleted(4);
+
+			lastY = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
+			m_socket->m_inBuffer.ReadCompleted(4);
+
+			lastZ = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
+			m_socket->m_inBuffer.ReadCompleted(4);
+
+			lastRot = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
+			m_socket->m_inBuffer.ReadCompleted(4);
+
+			hasBeenUpdatedOnce = true;
+
+			s -= 16;
 		}
 	}
 };

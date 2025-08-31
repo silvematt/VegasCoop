@@ -262,6 +262,16 @@ bool NVSEPlugin_Load(NVSEInterface* nvse)
 	/*2008*/ REG_CMD(VegasCoop_SetupListener);
 	/*2009*/ REG_CMD(VegasCoop_AcceptConnection);
 	/*2010*/ REG_CMD(VegasCoop_Connect);
+	/*2011*/ REG_CMD(VegasCoop_SendPosition);
+	/*2012*/ REG_CMD(VegasCoop_RecvAndSet);
+	/*2013*/ REG_CMD(VegasCoop_IsConnectionDone);
 
+	/*2013*/ REG_CMD(VegasCoop_GetLastX);
+	/*2013*/ REG_CMD(VegasCoop_GetLastY);
+	/*2013*/ REG_CMD(VegasCoop_GetLastZ);
+	/*2013*/ REG_CMD(VegasCoop_GetLastRotZ);
+	/*2013*/ REG_CMD(VegasCoop_HasBeenUpdatedOnce);
+
+	
 	return true;
 }

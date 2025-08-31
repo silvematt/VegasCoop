@@ -42,7 +42,7 @@ namespace NECRO
         }
 
         // Wraps a packet in a NetworkMessage
-        NetworkMessage(const Packet& p)
+        NetworkMessage(const Packet& p) : m_rpos(0), m_wpos(0)
         {
             m_data.resize(p.Size());
             Write(p.GetContentToRead(), p.Size());

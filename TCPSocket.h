@@ -34,7 +34,7 @@ namespace NECRO
 	//-------------------------------------------------------
 	class TCPSocket
 	{
-	protected:
+	public:
 		friend class SocketAddress;
 		sock_t m_socket;
 
