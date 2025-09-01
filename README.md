@@ -14,6 +14,10 @@ It's based on the nvse_plugin_example and uses the [NECRO Socket Library](https:
 
 The mod adds commands that call C++ code, but it uses an .esp to interface with the game, so there will be OBScript overhead.
 
+
+I think sharing this is a good thing, it can serve as a starting point or reference for setting up a co-op mod.
+
+
 # Some notes
 
 I do believe you could get far into development with an OBScript based setup like this example, especially for a co-op 2 player mod. But it's probably one of those things that works until it doesnt, and there will probably be some instances where you would really like to avoid it. 
@@ -27,8 +31,6 @@ In the kMessage_MainGameLoop you'd access a "processedMessages" queue and apply 
 
 
 # Usage
-
-I think sharing this is a good thing, it can serve as a starting point or reference for setting up a co-op mod.
 
 1) [Set the desired port for the host](https://github.com/silvematt/VegasCoop/blob/665c99974e314fc2e2ed27191a3675a35632f218/src/VegasCoopBlock.h#L35) (default is 61532)
 
