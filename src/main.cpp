@@ -111,6 +111,7 @@ void MessageHandler(NVSEMessagingInterface::Message* msg)
 	case NVSEMessagingInterface::kMessage_ClearScriptDataCache: break;
 	
 	case NVSEMessagingInterface::kMessage_MainGameLoop: 
+
 		break;
 
 	case NVSEMessagingInterface::kMessage_ScriptCompile: break;
