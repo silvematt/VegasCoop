@@ -124,7 +124,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..;$(SolutionDir)\..\nvse;$(SolutionDir)\..\nvse\nvse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\fn_functions;$(SolutionDir)\src\Network;$(SolutionDir)\src;$(SolutionDir);$(SolutionDir)\..;$(SolutionDir)\..\nvse;$(SolutionDir)\..\nvse\nvse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NVSE_PLUGIN_EXAMPLE_EXPORTS;RUNTIME_VERSION=0x040020D0;RUNTIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -343,9 +343,10 @@
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release GECK|Win32'">
       </ForcedIncludeFiles>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="TCPSocket.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Network\GameSocket.cpp" />
+    <ClCompile Include="src\Network\Packet.cpp" />
+    <ClCompile Include="src\Network\TCPSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\nvse\nvse\CommandTable.h" />
@@ -370,15 +371,16 @@
     <ClInclude Include="..\nvse\nvse\SafeWrite.h" />
     <ClInclude Include="..\nvse\nvse\Utilities.h" />
     <ClInclude Include="..\nvse\nvse\utility.h" />
-    <ClInclude Include="VegasCoopBlock.h" />
-    <ClInclude Include="fn_intro_to_script_functions.h" />
-    <ClInclude Include="fn_vegascoop_functions.h" />
-    <ClInclude Include="fn_typed_functions.h" />
-    <ClInclude Include="NetworkMessage.h" />
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="SocketAddress.h" />
-    <ClInclude Include="SocketUtility.h" />
-    <ClInclude Include="TCPSocket.h" />
+    <ClInclude Include="src\fn_functions\fn_intro_to_script_functions.h" />
+    <ClInclude Include="src\fn_functions\fn_typed_functions.h" />
+    <ClInclude Include="src\fn_functions\fn_vegascoop_functions.h" />
+    <ClInclude Include="src\Network\GameSocket.h" />
+    <ClInclude Include="src\Network\NetworkMessage.h" />
+    <ClInclude Include="src\Network\Packet.h" />
+    <ClInclude Include="src\Network\SocketAddress.h" />
+    <ClInclude Include="src\Network\SocketUtility.h" />
+    <ClInclude Include="src\Network\TCPSocket.h" />
+    <ClInclude Include="src\VegasCoopBlock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />

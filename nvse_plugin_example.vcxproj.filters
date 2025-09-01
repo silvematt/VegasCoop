@@ -13,7 +13,7 @@
     <Filter Include="VegasCoop\Networking">
       <UniqueIdentifier>{c8f049c0-e8e5-4234-ae61-cb18e6580d68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="VegasCoop\Functions">
+    <Filter Include="VegasCoop\fn_functions">
       <UniqueIdentifier>{c869d188-589b-4b73-8a44-c8198d46238b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -64,7 +64,6 @@
       <Filter>nvse</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.c" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="..\nvse\nvse\containers.cpp">
       <Filter>nvse</Filter>
     </ClCompile>
@@ -80,11 +79,17 @@
     <ClCompile Include="..\nvse\nvse\NiTypes.cpp">
       <Filter>nvse</Filter>
     </ClCompile>
-    <ClCompile Include="TCPSocket.cpp">
+    <ClCompile Include="src\Network\GameSocket.cpp">
       <Filter>VegasCoop\Networking</Filter>
     </ClCompile>
-    <ClCompile Include="Packet.cpp">
+    <ClCompile Include="src\Network\Packet.cpp">
       <Filter>VegasCoop\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Network\TCPSocket.cpp">
+      <Filter>VegasCoop\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>VegasCoop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,12 +147,6 @@
     <ClInclude Include="..\nvse\nvse\CommandTable.h">
       <Filter>nvse</Filter>
     </ClInclude>
-    <ClInclude Include="fn_intro_to_script_functions.h">
-      <Filter>functions</Filter>
-    </ClInclude>
-    <ClInclude Include="fn_typed_functions.h">
-      <Filter>functions</Filter>
-    </ClInclude>
     <ClInclude Include="..\nvse\nvse\GameScript.h">
       <Filter>nvse</Filter>
     </ClInclude>
@@ -160,25 +159,34 @@
     <ClInclude Include="..\nvse\nvse\GameUI.h">
       <Filter>nvse</Filter>
     </ClInclude>
-    <ClInclude Include="SocketAddress.h">
+    <ClInclude Include="src\fn_functions\fn_intro_to_script_functions.h">
+      <Filter>VegasCoop\fn_functions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fn_functions\fn_typed_functions.h">
+      <Filter>VegasCoop\fn_functions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fn_functions\fn_vegascoop_functions.h">
+      <Filter>VegasCoop\fn_functions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\GameSocket.h">
       <Filter>VegasCoop\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="SocketUtility.h">
+    <ClInclude Include="src\Network\NetworkMessage.h">
       <Filter>VegasCoop\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="TCPSocket.h">
+    <ClInclude Include="src\Network\Packet.h">
       <Filter>VegasCoop\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkMessage.h">
+    <ClInclude Include="src\Network\SocketAddress.h">
       <Filter>VegasCoop\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
+    <ClInclude Include="src\Network\SocketUtility.h">
       <Filter>VegasCoop\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="fn_vegascoop_functions.h">
-      <Filter>VegasCoop\Functions</Filter>
+    <ClInclude Include="src\Network\TCPSocket.h">
+      <Filter>VegasCoop\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="VegasCoopBlock.h">
+    <ClInclude Include="src\VegasCoopBlock.h">
       <Filter>VegasCoop</Filter>
     </ClInclude>
   </ItemGroup>

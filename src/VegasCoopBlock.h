@@ -1,30 +1,25 @@
 #pragma once
 
 #include "GameAPI.h"
-#include "TCPSocket.h"
+#include "GameSocket.h"
 
 using namespace NECRO;
+
 
 class VegasCoopBlock
 {
 private:
 	TCPSocket					m_listener;
-	std::shared_ptr<TCPSocket>	m_socket;
-
-	// State
-	bool m_isConnecting = false;
-	bool m_isConnected = false;
 
 public:
-	bool connectionDone = false;
+	std::shared_ptr<GameSocket>	m_socket;
 
-	bool hasBeenUpdatedOnce = false;
-	float lastX;
-	float lastY;
-	float lastZ;
-	float lastRot;
+	bool						m_isConnected;		// true on theserver-side after the Accept() completes, true on the client-side after Connect() succeedes
+													// when this is true, m_socket is writable/readable, but the other side may not be ready.
+													// should send greet packet to have a isReady bool
 
-	VegasCoopBlock() : m_listener(SocketAddressesFamily::INET)
+public:
+	VegasCoopBlock() : m_listener(SocketAddressesFamily::INET), m_isConnected(false)
 	{
 	}
 
@@ -56,12 +51,14 @@ public:
 	int AcceptConnection()
 	{
 		SocketAddress otherAddr;
-		std::shared_ptr<TCPSocket> inSock = m_listener.Accept<TCPSocket>(otherAddr);
+		std::shared_ptr<GameSocket> inSock = m_listener.Accept<GameSocket>(otherAddr);
 
 		if (inSock != nullptr)
 		{
 			m_socket = inSock;
-			connectionDone = true;
+			m_isConnected = true;
+
+			Console_Print("VegasCoopBlock: Accepted!");
 			return 0;
 		}
 		else
@@ -71,7 +68,7 @@ public:
 	int Connect()
 	{
 		// Make socket
-		m_socket = std::make_shared<TCPSocket>(SocketAddressesFamily::INET);
+		m_socket = std::make_shared<GameSocket>(SocketAddressesFamily::INET);
 		
 		uint16_t outPort = 61532;
 		struct in_addr addr;
@@ -80,58 +77,50 @@ public:
 		SocketAddress authAddr(AF_INET, addr.s_addr, outPort);
 
 		int flag = 1;
+
 		m_socket->SetSocketOption(IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(int));
 		m_socket->SetBlockingEnabled(true); // block on connection
 		m_socket->SetRemoteAddressAndPort(authAddr, outPort);
 
-		m_isConnecting = true;
-
 		if (m_socket->Connect(authAddr) != 0)
 		{
-			m_isConnected = false;
-			m_isConnecting = false;
+			_MESSAGE("Error occurred during VegasCoopBlock::Connect.");
 			return 1;
 		}
 		else
 		{
 			// Connection succeded!
 			m_socket->SetBlockingEnabled(false); // block on connection
-			connectionDone = true;
+			m_isConnected = true;
+
+			m_socket->OnConnectedCallback();
+
 			return 0;
 		}
 	}
 
-	void QueuePacket(NetworkMessage&& m)
+	void NetworkUpdate()
 	{
-		m_socket->QueuePacket(std::move(m));
-	}
-
-	void Send()
-	{
-		m_socket->Send();
-	}
-
-	void Receive()
-	{
-		int s =  m_socket->Receive();
-
-		while (s >= 16)
+		if (m_isConnected)
 		{
-			lastX = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
-			m_socket->m_inBuffer.ReadCompleted(4);
+			// Receive
+			int recv = m_socket->Receive();
 
-			lastY = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
-			m_socket->m_inBuffer.ReadCompleted(4);
+			// Apply [currently done via OBScript]
 
-			lastZ = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
-			m_socket->m_inBuffer.ReadCompleted(4);
+			// Send
+			TESObjectREFR* player = (*g_thePlayer);
 
-			lastRot = *reinterpret_cast<float*>(m_socket->m_inBuffer.GetReadPointer());
-			m_socket->m_inBuffer.ReadCompleted(4);
+			Packet p;
 
-			hasBeenUpdatedOnce = true;
+			p << player->posX;
+			p << player->posY;
+			p << player->posZ;
+			p << player->rotZ;
 
-			s -= 16;
+			NetworkMessage m(p);
+			m_socket->QueuePacket(std::move(m));
+			int sent = m_socket->Send();
 		}
 	}
 };

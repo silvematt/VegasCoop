@@ -109,7 +109,10 @@ void MessageHandler(NVSEMessagingInterface::Message* msg)
 	case NVSEMessagingInterface::kMessage_RenameNewGameName: break;
 	case NVSEMessagingInterface::kMessage_DeferredInit: break;
 	case NVSEMessagingInterface::kMessage_ClearScriptDataCache: break;
-	case NVSEMessagingInterface::kMessage_MainGameLoop: break;
+	
+	case NVSEMessagingInterface::kMessage_MainGameLoop: 
+		break;
+
 	case NVSEMessagingInterface::kMessage_ScriptCompile: break;
 	case NVSEMessagingInterface::kMessage_EventListDestroyed: break;
 	case NVSEMessagingInterface::kMessage_PostQueryPlugins: break;
@@ -258,20 +261,21 @@ bool NVSEPlugin_Load(NVSEInterface* nvse)
 	/*2004*/ REG_TYPED_CMD(ExamplePlugin_ReturnForm, Form);
 	/*2005*/ REG_TYPED_CMD(ExamplePlugin_ReturnString, String);	// ignore the highlighting for String class, that's not being used here.
 	/*2006*/ REG_TYPED_CMD(ExamplePlugin_ReturnArray, Array);
+
+
 	/*2007*/ REG_CMD(VegasCoop_Init);
 	/*2008*/ REG_CMD(VegasCoop_SetupListener);
 	/*2009*/ REG_CMD(VegasCoop_AcceptConnection);
 	/*2010*/ REG_CMD(VegasCoop_Connect);
-	/*2011*/ REG_CMD(VegasCoop_SendPosition);
-	/*2012*/ REG_CMD(VegasCoop_RecvAndSet);
-	/*2013*/ REG_CMD(VegasCoop_IsConnectionDone);
+
+	/*2011*/ REG_CMD(VegasCoop_IsConnectionDone);
+	/*2012*/ REG_CMD(VegasCoop_NetworkUpdate);
 
 	/*2013*/ REG_CMD(VegasCoop_GetLastX);
-	/*2013*/ REG_CMD(VegasCoop_GetLastY);
-	/*2013*/ REG_CMD(VegasCoop_GetLastZ);
-	/*2013*/ REG_CMD(VegasCoop_GetLastRotZ);
-	/*2013*/ REG_CMD(VegasCoop_HasBeenUpdatedOnce);
+	/*2014*/ REG_CMD(VegasCoop_GetLastY);
+	/*2015*/ REG_CMD(VegasCoop_GetLastZ);
+	/*2016*/ REG_CMD(VegasCoop_GetLastRotZ);
+	/*2017*/ REG_CMD(VegasCoop_HasValidNetData);
 
-	
 	return true;
 }

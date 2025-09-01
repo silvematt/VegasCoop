@@ -2,6 +2,8 @@
 //In here we define a script function
 //Script functions must always follow the Cmd_FunctionName_Execute naming convention
 
+constexpr double RAD_TO_DEG = 180.0f / 3.14159265359;
+
 DEFINE_COMMAND_PLUGIN(VegasCoop_Init, "Initializes VegasCoop", false, NULL)
 
 #if RUNTIME	// unnecessary if we only compile in non-GECK mode.
@@ -86,63 +88,15 @@ bool Cmd_VegasCoop_Connect_Execute(COMMAND_ARGS)
 
 
 
-DEFINE_COMMAND_PLUGIN(VegasCoop_SendPosition, "Sends the current's player position to the other end", false, NULL)
+DEFINE_COMMAND_PLUGIN(VegasCoop_NetworkUpdate, "Sends the current's player position to the other end", false, NULL)
 
 #if RUNTIME	// unnecessary if we only compile in non-GECK mode.
 // Otherwise, GECK plugins do not need to know a function's code.
-bool Cmd_VegasCoop_SendPosition_Execute(COMMAND_ARGS)
+bool Cmd_VegasCoop_NetworkUpdate_Execute(COMMAND_ARGS)
 {
-	TESObjectREFR* player = (*g_thePlayer);
-	float x = player->posX;
-	float y = player->posY;
-	float z = player->posZ;
-	float ang = player->rotZ;
+	g_vegasCoopBlock.NetworkUpdate();
 
-	Packet p;
-	
-	p << x;
-	p << y;
-	p << z;
-	p << ang;
-
-	NetworkMessage m(p);
-	g_vegasCoopBlock.QueuePacket(std::move(m));
-	g_vegasCoopBlock.Send();
 	*result = 0;
-	return true;
-}
-#endif
-
-
-DEFINE_COMMAND_PLUGIN(VegasCoop_RecvAndSet, "Sends the current's player position to the other end", false, kParams_OneObjectRef)
-
-#if RUNTIME	// unnecessary if we only compile in non-GECK mode.
-// Otherwise, GECK plugins do not need to know a function's code.
-bool Cmd_VegasCoop_RecvAndSet_Execute(COMMAND_ARGS)
-{
-	TESObjectREFR* targetRef = nullptr;
-
-	// Extract the reference argument
-	if (ExtractArgsEx(EXTRACT_ARGS_EX, &targetRef))
-	{
-		g_vegasCoopBlock.Receive();
-
-		NiVector3 pos;
-		pos.x = g_vegasCoopBlock.lastX;
-		pos.y = g_vegasCoopBlock.lastY;
-		pos.z = g_vegasCoopBlock.lastZ;
-
-		targetRef->rotZ = g_vegasCoopBlock.lastRot;
-
-		*result = 0;
-		return true;
-	}
-	else
-	{
-		Console_Print("NO TARGET REF!");
-		_MESSAGE("NO TARGET REF");
-	}
-
 	
 	return true;
 }
@@ -155,10 +109,10 @@ DEFINE_COMMAND_PLUGIN(VegasCoop_IsConnectionDone, "Sends the current's player po
 // Otherwise, GECK plugins do not need to know a function's code.
 bool Cmd_VegasCoop_IsConnectionDone_Execute(COMMAND_ARGS)
 {
-	if (g_vegasCoopBlock.connectionDone)
-		*result = 0;
-	else
+	if (g_vegasCoopBlock.m_isConnected)
 		*result = 1;
+	else
+		*result = 0;
 
 	return true;
 }
@@ -171,7 +125,9 @@ DEFINE_COMMAND_PLUGIN(VegasCoop_GetLastX, "Sends the current's player position t
 // Otherwise, GECK plugins do not need to know a function's code.
 bool Cmd_VegasCoop_GetLastX_Execute(COMMAND_ARGS)
 {
-	*result = g_vegasCoopBlock.lastX;
+	const auto& netData = g_vegasCoopBlock.m_socket->GetNetData();
+
+	*result = netData.pos.x;
 
 	return true;
 }
@@ -184,7 +140,9 @@ DEFINE_COMMAND_PLUGIN(VegasCoop_GetLastY, "Sends the current's player position t
 // Otherwise, GECK plugins do not need to know a function's code.
 bool Cmd_VegasCoop_GetLastY_Execute(COMMAND_ARGS)
 {
-	*result = g_vegasCoopBlock.lastY;
+	const auto& netData = g_vegasCoopBlock.m_socket->GetNetData();
+
+	*result = netData.pos.y;
 
 	return true;
 }
@@ -196,7 +154,9 @@ DEFINE_COMMAND_PLUGIN(VegasCoop_GetLastZ, "Sends the current's player position t
 // Otherwise, GECK plugins do not need to know a function's code.
 bool Cmd_VegasCoop_GetLastZ_Execute(COMMAND_ARGS)
 {
-	*result = g_vegasCoopBlock.lastZ;
+	const auto& netData = g_vegasCoopBlock.m_socket->GetNetData();
+
+	*result = netData.pos.z;
 
 	return true;
 }
@@ -209,20 +169,24 @@ DEFINE_COMMAND_PLUGIN(VegasCoop_GetLastRotZ, "Sends the current's player positio
 // Otherwise, GECK plugins do not need to know a function's code.
 bool Cmd_VegasCoop_GetLastRotZ_Execute(COMMAND_ARGS)
 {
-	*result = g_vegasCoopBlock.lastRot;
+	const auto& netData = g_vegasCoopBlock.m_socket->GetNetData();
+
+	*result = netData.rotZ * RAD_TO_DEG;
 
 	return true;
 }
 #endif
 
 
-DEFINE_COMMAND_PLUGIN(VegasCoop_HasBeenUpdatedOnce, "Sends the current's player position to the other end", false, NULL)
+DEFINE_COMMAND_PLUGIN(VegasCoop_HasValidNetData, "Sends the current's player position to the other end", false, NULL)
 
 #if RUNTIME	// unnecessary if we only compile in non-GECK mode.
 // Otherwise, GECK plugins do not need to know a function's code.
-bool Cmd_VegasCoop_HasBeenUpdatedOnce_Execute(COMMAND_ARGS)
+bool Cmd_VegasCoop_HasValidNetData_Execute(COMMAND_ARGS)
 {
-	*result = g_vegasCoopBlock.hasBeenUpdatedOnce == false ? 1 : 0;
+	const auto& netData = g_vegasCoopBlock.m_socket->GetNetData();
+
+	*result = netData.isValid == false ? 0 : 1;
 
 	return true;
 }

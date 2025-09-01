@@ -33,7 +33,6 @@ namespace NECRO
 		}
 	}
 
-
 	bool TCPSocket::IsShutDown()
 	{
 		return m_ShutDown;

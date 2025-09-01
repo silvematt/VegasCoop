@@ -34,7 +34,7 @@ namespace NECRO
 	//-------------------------------------------------------
 	class TCPSocket
 	{
-	public:
+	protected:
 		friend class SocketAddress;
 		sock_t m_socket;
 
@@ -49,7 +49,6 @@ namespace NECRO
 		bool m_Closed = false;
 
 	public:
-		// If the outqueue is empty, only poll for POLLIN events, otherwise, also POLLOUT events
 		// This is better than the callback Send() approach because even if a Send fails because the socket was not writable at the time of the callback, we'll still try to send the packets later
 		pollfd m_pfd;
 
@@ -60,11 +59,11 @@ namespace NECRO
 		virtual int		ReadCallback() { return 0; };
 		virtual void	SendCallback() {};
 
-		bool						IsOpen();
-		bool						IsShutDown();
+		bool			IsOpen();
+		bool			IsShutDown();
 
-		int							Bind(const SocketAddress& addr);
-		int							Listen(int backlog = TCP_LISTEN_DEFUALT_BACKLOG);
+		int				Bind(const SocketAddress& addr);
+		int				Listen(int backlog = TCP_LISTEN_DEFUALT_BACKLOG);
 
 		// Templated Accept
 		template<typename T = TCPSocket>
